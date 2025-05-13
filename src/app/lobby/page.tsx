@@ -22,7 +22,7 @@ export default function Lobby() {
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <button 
-                onClick={() => router.push('/escolher-ativo')}
+                onClick={() => router.push('/escolher-cultura')}
                 className="bg-white border-2 border-agro-green-600 text-agro-green-600 py-6 px-4 rounded-xl hover:bg-agro-green-50 transition-colors font-medium text-lg flex items-center justify-center space-x-2"
               >
                 <span>Escolher Princípio Ativo</span>

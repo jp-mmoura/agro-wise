@@ -6,7 +6,7 @@ export default function EscolherCultura() {
 
   const handleSelect = (cultura: string) => {
     localStorage.setItem('selectedCultura', cultura);
-    router.push('/lobby');
+    router.push('/escolher-ativo');
   };
 
   return (
