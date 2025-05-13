@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
@@ -16,13 +17,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
   const router = useRouter();
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, _password: string) => {
     // Demo: accept any email/password
     setUser(email);
     return true;
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, _password: string) => {
     // Demo: accept any email/password
     setUser(email);
     return true;
