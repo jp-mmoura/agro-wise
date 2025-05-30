@@ -1,132 +1,156 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { productSchema, type ProductFormData } from '@/lib/validations';
+import toast from 'react-hot-toast';
 import { useState } from 'react';
 
 export default function CadastrarProduto() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    nome: '',
-    preco: '',
-    descricao: '',
-    quantidade: '',
-    fornecedor: ''
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically save the data to your backend
-    console.log('Produto cadastrado:', formData);
-    router.push('/lobby');
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const onSubmit = async (data: ProductFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Produto cadastrado:', data);
+      toast.success('Produto cadastrado com sucesso!');
+      router.push('/lobby');
+    } catch (error) {
+      toast.error('Erro ao cadastrar produto');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-agro-green-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-8">Cadastrar Produto</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-1">
-              Nome do Produto
-            </label>
-            <input
-              type="text"
-              id="nome"
-              name="nome"
-              value={formData.nome}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
+    <div className="page-container">
+      <div className="section-container">
+        <div className="glass-card rounded-2xl overflow-hidden animate-fadeIn">
+          <div className="bg-gradient-to-r from-agro-green-600 to-agro-green-500 p-8">
+            <h1 className="text-2xl font-bold text-white">Cadastrar Produto</h1>
+            <p className="text-white/80 mt-1">Preencha os dados do novo produto</p>
           </div>
+          
+          <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="nome" className="block text-sm font-medium text-agro-brown-700 mb-1">
+                  Nome do Produto
+                </label>
+                <input
+                  {...register('nome')}
+                  type="text"
+                  className="input-field"
+                  disabled={isSubmitting}
+                />
+                {errors.nome && (
+                  <p className="text-red-600 text-sm mt-1">{errors.nome.message}</p>
+                )}
+              </div>
 
-          <div>
-            <label htmlFor="preco" className="block text-sm font-medium text-gray-700 mb-1">
-              Preço (R$)
-            </label>
-            <input
-              type="number"
-              id="preco"
-              name="preco"
-              value={formData.preco}
-              onChange={handleChange}
-              required
-              step="0.01"
-              min="0"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
+              <div>
+                <label htmlFor="preco" className="block text-sm font-medium text-agro-brown-700 mb-1">
+                  Preço (R$)
+                </label>
+                <input
+                  {...register('preco')}
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  className="input-field"
+                  disabled={isSubmitting}
+                />
+                {errors.preco && (
+                  <p className="text-red-600 text-sm mt-1">{errors.preco.message}</p>
+                )}
+              </div>
 
-          <div>
-            <label htmlFor="descricao" className="block text-sm font-medium text-gray-700 mb-1">
-              Descrição
-            </label>
-            <textarea
-              id="descricao"
-              name="descricao"
-              value={formData.descricao}
-              onChange={handleChange}
-              required
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
+              <div>
+                <label htmlFor="descricao" className="block text-sm font-medium text-agro-brown-700 mb-1">
+                  Descrição
+                </label>
+                <textarea
+                  {...register('descricao')}
+                  rows={3}
+                  className="input-field"
+                  disabled={isSubmitting}
+                />
+                {errors.descricao && (
+                  <p className="text-red-600 text-sm mt-1">{errors.descricao.message}</p>
+                )}
+              </div>
 
-          <div>
-            <label htmlFor="quantidade" className="block text-sm font-medium text-gray-700 mb-1">
-              Quantidade
-            </label>
-            <input
-              type="number"
-              id="quantidade"
-              name="quantidade"
-              value={formData.quantidade}
-              onChange={handleChange}
-              required
-              min="0"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
+              <div>
+                <label htmlFor="quantidade" className="block text-sm font-medium text-agro-brown-700 mb-1">
+                  Quantidade
+                </label>
+                <input
+                  {...register('quantidade')}
+                  type="number"
+                  min="0"
+                  className="input-field"
+                  disabled={isSubmitting}
+                />
+                {errors.quantidade && (
+                  <p className="text-red-600 text-sm mt-1">{errors.quantidade.message}</p>
+                )}
+              </div>
 
-          <div>
-            <label htmlFor="fornecedor" className="block text-sm font-medium text-gray-700 mb-1">
-              Fornecedor
-            </label>
-            <input
-              type="text"
-              id="fornecedor"
-              name="fornecedor"
-              value={formData.fornecedor}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
+              <div>
+                <label htmlFor="fornecedor" className="block text-sm font-medium text-agro-brown-700 mb-1">
+                  Fornecedor
+                </label>
+                <input
+                  {...register('fornecedor')}
+                  type="text"
+                  className="input-field"
+                  disabled={isSubmitting}
+                />
+                {errors.fornecedor && (
+                  <p className="text-red-600 text-sm mt-1">{errors.fornecedor.message}</p>
+                )}
+              </div>
+            </div>
 
-          <div className="space-y-4 pt-4">
-            <button
-              type="submit"
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 transition-colors"
-            >
-              Cadastrar
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push('/lobby')}
-              className="w-full bg-gray-600 text-white py-3 px-4 rounded-md hover:bg-gray-700 transition-colors"
-            >
-              Voltar ao Menu
-            </button>
-          </div>
-        </form>
+            <div className="space-y-4 pt-4">
+              <button
+                type="submit"
+                className="btn-primary w-full flex items-center justify-center"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <span className="inline-flex items-center">
+                    <span className="animate-spin mr-2">⏳</span>
+                    Cadastrando...
+                  </span>
+                ) : (
+                  'Cadastrar'
+                )}
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => router.push('/lobby')}
+                className="btn-secondary w-full"
+                disabled={isSubmitting}
+              >
+                Voltar ao Menu
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
-} 
+}

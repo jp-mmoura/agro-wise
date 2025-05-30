@@ -11,7 +11,13 @@
   "dependencies": {
     "next": "^15.3.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-query": "^3.39.3",
+    "zod": "^3.22.4",
+    "react-hot-toast": "^2.4.1",
+    "react-loading-skeleton": "^3.3.1",
+    "@hookform/resolvers": "^3.3.2",
+    "react-hook-form": "^7.49.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
