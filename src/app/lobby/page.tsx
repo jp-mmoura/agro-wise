@@ -4,34 +4,51 @@ import { useAuth } from '../../context/AuthContext';
 
 export default function Lobby() {
   const router = useRouter();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-agro-green-50 p-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="bg-agro-green-600 p-6 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-white">Escolha sua Ação</h1>
+    <div className="page-container">
+      <div className="section-container">
+        <div className="glass-card rounded-2xl overflow-hidden animate-fadeIn">
+          <div className="bg-gradient-to-r from-agro-green-600 to-agro-green-500 p-8 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-white">Olá, {user?.split('@')[0]}</h1>
+              <p className="text-white/80 mt-1">O que você gostaria de fazer hoje?</p>
+            </div>
             <button 
               onClick={signOut}
-              className="bg-white text-agro-green-600 py-2 px-4 rounded-lg hover:bg-agro-green-50 transition-colors font-medium"
+              className="btn-secondary"
             >
               Sair
             </button>
           </div>
-          <div className="p-6">
+          
+          <div className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <button 
                 onClick={() => router.push('/escolher-cultura')}
-                className="bg-white border-2 border-agro-green-600 text-agro-green-600 py-6 px-4 rounded-xl hover:bg-agro-green-50 transition-colors font-medium text-lg flex items-center justify-center space-x-2"
+                className="glass-card p-8 rounded-xl text-left card-hover group"
               >
-                <span>Escolher Princípio Ativo</span>
+                <h3 className="text-xl font-semibold text-agro-green-700 mb-2 
+                             group-hover:text-agro-green-600 transition-colors">
+                  Escolher Princípio Ativo
+                </h3>
+                <p className="text-agro-brown-600">
+                  Selecione o princípio ativo para seus produtos
+                </p>
               </button>
+              
               <button 
                 onClick={() => router.push('/cadastrar-produto')}
-                className="bg-white border-2 border-agro-green-600 text-agro-green-600 py-6 px-4 rounded-xl hover:bg-agro-green-50 transition-colors font-medium text-lg flex items-center justify-center space-x-2"
+                className="glass-card p-8 rounded-xl text-left card-hover group"
               >
-                <span>Cadastrar Produto</span>
+                <h3 className="text-xl font-semibold text-agro-green-700 mb-2 
+                             group-hover:text-agro-green-600 transition-colors">
+                  Cadastrar Produto
+                </h3>
+                <p className="text-agro-brown-600">
+                  Adicione novos produtos ao seu catálogo
+                </p>
               </button>
             </div>
           </div>
@@ -39,4 +56,4 @@ export default function Lobby() {
       </div>
     </div>
   );
-} 
+}

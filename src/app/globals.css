@@ -21,9 +21,68 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-agro-green-50 to-white min-h-screen;
+    font-family: 'Inter', sans-serif;
+  }
 }
- 
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-agro-brown-200 
+           focus:ring-2 focus:ring-agro-green-500 focus:border-agro-green-500 
+           transition-all duration-300 bg-white/50 backdrop-blur-sm;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-agro-green-600 to-agro-green-500
+           hover:from-agro-green-700 hover:to-agro-green-600
+           text-white py-3 px-6 rounded-xl
+           transform hover:scale-[1.02] transition-all duration-300
+           shadow-lg hover:shadow-xl
+           font-medium;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/90 text-agro-green-700
+           hover:bg-white/95 border border-agro-green-200
+           py-3 px-6 rounded-xl
+           transform hover:scale-[1.02] transition-all duration-300
+           shadow-md hover:shadow-lg
+           font-medium;
+  }
+
+  .card-hover {
+    @apply transform hover:scale-[1.02] transition-all duration-300
+           hover:shadow-lg;
+  }
+
+  .page-container {
+    @apply min-h-screen p-4 sm:p-6 md:p-8 
+           bg-gradient-to-br from-agro-green-50 via-white to-agro-green-50;
+  }
+
+  .section-container {
+    @apply max-w-4xl mx-auto;
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}

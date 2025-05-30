@@ -8,6 +8,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn, user } = useAuth();
   const router = useRouter();
 
@@ -19,27 +20,39 @@ export default function SignIn() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await signIn(email, password);
-    if (success) {
-      router.push('/lobby');
-    } else {
-      setError('Email ou senha inválidos');
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      const success = await signIn(email, password);
+      if (success) {
+        router.push('/lobby');
+      } else {
+        setError('Email ou senha inválidos');
+      }
+    } catch (err) {
+      setError('Ocorreu um erro ao fazer login');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-agro-green-50 p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="bg-agro-green-600 p-6">
-            <h1 className="text-2xl font-bold text-white text-center">Bem-vindo de volta</h1>
+    <div className="page-container flex items-center justify-center">
+      <div className="w-full max-w-md animate-fadeIn">
+        <div className="glass-card rounded-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-agro-green-600 to-agro-green-500 p-8">
+            <h1 className="text-3xl font-bold text-white text-center">Bem-vindo de volta</h1>
+            <p className="text-white/80 text-center mt-2">Entre para gerenciar seus produtos</p>
           </div>
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          
+          <form onSubmit={handleSubmit} className="p-8 space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm animate-fadeIn">
                 {error}
               </div>
             )}
+            
             <div className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-agro-brown-700 mb-1">
@@ -52,9 +65,11 @@ export default function SignIn() {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-agro-brown-200 focus:ring-2 focus:ring-agro-green-500 focus:border-agro-green-500 transition-colors"
+                  className="input-field"
+                  disabled={isLoading}
                 />
               </div>
+              
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-agro-brown-700 mb-1">
                   Senha
@@ -66,19 +81,34 @@ export default function SignIn() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-agro-brown-200 focus:ring-2 focus:ring-agro-green-500 focus:border-agro-green-500 transition-colors"
+                  className="input-field"
+                  disabled={isLoading}
                 />
               </div>
             </div>
+
             <button
               type="submit"
-              className="w-full bg-agro-green-600 text-white py-3 px-4 rounded-lg hover:bg-agro-green-700 transition-colors font-medium"
+              className="btn-primary w-full flex items-center justify-center"
+              disabled={isLoading}
             >
-              Entrar
+              {isLoading ? (
+                <span className="inline-flex items-center">
+                  <span className="animate-spin mr-2">⏳</span>
+                  Entrando...
+                </span>
+              ) : (
+                'Entrar'
+              )}
             </button>
+
             <div className="text-center text-sm">
               <span className="text-agro-brown-600">Não tem uma conta? </span>
-              <Link href="/signup" className="text-agro-green-600 hover:text-agro-green-700 font-medium">
+              <Link 
+                href="/signup" 
+                className="text-agro-green-600 hover:text-agro-green-700 font-medium 
+                         transition-colors duration-300"
+              >
                 Criar conta
               </Link>
             </div>
@@ -87,4 +117,4 @@ export default function SignIn() {
       </div>
     </div>
   );
-} 
+}
