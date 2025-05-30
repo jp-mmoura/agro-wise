@@ -19,4 +19,4 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Protected>{children}</Protected>
     </AuthProvider>
   );
-} 
+}
